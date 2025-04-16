@@ -16,15 +16,14 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'ExpoAesUniversalNode',
+      name: 'expo-aes-universal-node',
+      fileName: 'index',
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      // Externalize dependencies that shouldn't be bundled
-      external: ['expo-aes-universal'],
+      external: ['crypto', 'expo-aes-universal'],
     },
   },
 });

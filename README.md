@@ -2,6 +2,23 @@
 
 Web implementation of expo-aes-universal for Expo applications.
 
+## Installation
+
+```bash
+npm install expo-aes-universal-node
+```
+
+## Peer Dependencies
+
+This package requires the following peer dependencies:
+
+- `expo-aes-universal`: The base package providing abstract cipher implementations
+- `expo-crypto-universal-web`: Web implementation of crypto utilities
+
+```bash
+npm install expo-aes-universal expo-crypto-universal-web
+```
+
 ## AES-128
 
 ### CBC Mode (A128CBC-HS256)
