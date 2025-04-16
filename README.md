@@ -13,13 +13,11 @@ In CBC mode, the Content Encryption Key (CEK) includes both the encryption key a
 - A128CBC-HS256: 32 bytes (16 bytes for encryption + 16 bytes for MAC)
 
 ```ts
-import { isWeb } from 'expo-crypto-universal';
 import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NativeCryptoModule } from 'expo-crypto-universal-native';
 import { NodeCbcCipher } from 'expo-aes-universal-node';
 
-// Get the appropriate crypto module for your platform
-const crypto = isWeb() ? new WebCryptoModule() : new NativeCryptoModule();
+// Create crypto module instance
+const crypto = new WebCryptoModule();
 
 // Create cipher instance
 const cipher = new NodeCbcCipher(crypto);
@@ -58,13 +56,11 @@ In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
 - A128GCM: 16 bytes
 
 ```ts
-import { isWeb } from 'expo-crypto-universal';
 import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NativeCryptoModule } from 'expo-crypto-universal-native';
 import { NodeGcmCipher } from 'expo-aes-universal-node';
 
-// Get the appropriate crypto module for your platform
-const crypto = isWeb() ? new WebCryptoModule() : new NativeCryptoModule();
+// Create crypto module instance
+const crypto = new WebCryptoModule();
 
 // Create cipher instance
 const cipher = new NodeGcmCipher(crypto);
@@ -107,13 +103,11 @@ In CBC mode, the Content Encryption Key (CEK) includes both the encryption key a
 - A192CBC-HS384: 48 bytes (24 bytes for encryption + 24 bytes for MAC)
 
 ```ts
-import { isWeb } from 'expo-crypto-universal';
 import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NativeCryptoModule } from 'expo-crypto-universal-native';
 import { NodeCbcCipher } from 'expo-aes-universal-node';
 
-// Get the appropriate crypto module for your platform
-const crypto = isWeb() ? new WebCryptoModule() : new NativeCryptoModule();
+// Create crypto module instance
+const crypto = new WebCryptoModule();
 
 // Create cipher instance
 const cipher = new NodeCbcCipher(crypto);
@@ -152,13 +146,11 @@ In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
 - A192GCM: 24 bytes
 
 ```ts
-import { isWeb } from 'expo-crypto-universal';
 import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NativeCryptoModule } from 'expo-crypto-universal-native';
 import { NodeGcmCipher } from 'expo-aes-universal-node';
 
-// Get the appropriate crypto module for your platform
-const crypto = isWeb() ? new WebCryptoModule() : new NativeCryptoModule();
+// Create crypto module instance
+const crypto = new WebCryptoModule();
 
 // Create cipher instance
 const cipher = new NodeGcmCipher(crypto);
@@ -201,13 +193,11 @@ In CBC mode, the Content Encryption Key (CEK) includes both the encryption key a
 - A256CBC-HS512: 64 bytes (32 bytes for encryption + 32 bytes for MAC)
 
 ```ts
-import { isWeb } from 'expo-crypto-universal';
 import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NativeCryptoModule } from 'expo-crypto-universal-native';
 import { NodeCbcCipher } from 'expo-aes-universal-node';
 
-// Get the appropriate crypto module for your platform
-const crypto = isWeb() ? new WebCryptoModule() : new NativeCryptoModule();
+// Create crypto module instance
+const crypto = new WebCryptoModule();
 
 // Create cipher instance
 const cipher = new NodeCbcCipher(crypto);
@@ -246,13 +236,11 @@ In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
 - A256GCM: 32 bytes
 
 ```ts
-import { isWeb } from 'expo-crypto-universal';
 import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NativeCryptoModule } from 'expo-crypto-universal-native';
 import { NodeGcmCipher } from 'expo-aes-universal-node';
 
-// Get the appropriate crypto module for your platform
-const crypto = isWeb() ? new WebCryptoModule() : new NativeCryptoModule();
+// Create crypto module instance
+const crypto = new WebCryptoModule();
 
 // Create cipher instance
 const cipher = new NodeGcmCipher(crypto);
