@@ -1,0 +1,42 @@
+{
+  "name": "expo-aes-universal-node",
+  "type": "module",
+  "version": "0.1.1",
+  "description": "Web implementation of expo-aes-universal for Expo applications.",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "type-check": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/higayasuo/expo-aes-universal-node.git"
+  },
+  "keywords": [],
+  "author": "higayasuo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/higayasuo/expo-aes-universal-node/issues"
+  },
+  "homepage": "https://github.com/higayasuo/expo-aes-universal-node#readme",
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "typescript": "^5.8.3",
+    "vite": "^6.2.6",
+    "vite-plugin-dts": "^4.5.3",
+    "vitest": "^3.1.1"
+  },
+  "peerDependencies": {
+    "expo-aes-universal": "^0.1.1"
+  }
+}
