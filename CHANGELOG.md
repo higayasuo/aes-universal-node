@@ -1,3 +1,8 @@
+## 2024-04-18 v0.1.2
+
+- Fixed incorrect file extensions in Vite build output
+  - Changed `index.js` to `index.mjs` for ESM format
+
 ## 2025-04-16 v0.1.1
 
 - Initial release
