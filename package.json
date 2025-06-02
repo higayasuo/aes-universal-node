@@ -19,17 +19,26 @@
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm test && npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/higayasuo/expo-aes-universal-node.git"
-  },
-  "keywords": [],
+  "keywords": [
+    "aes",
+    "universal",
+    "node",
+    "crypto",
+    "encryption",
+    "decryption",
+    "cipher",
+    "ciphertext"
+  ],
   "author": "higayasuo",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/higayasuo/expo-aes-universal-node/issues"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/higayasuo/aes-universal-node.git"
   },
-  "homepage": "https://github.com/higayasuo/expo-aes-universal-node#readme",
+  "bugs": {
+    "url": "https://github.com/higayasuo/aes-universal-node/issues"
+  },
+  "homepage": "https://github.com/higayasuo/aes-universal-node#readme",
   "devDependencies": {
     "@types/node": "^22.14.1",
     "typescript": "^5.8.3",
