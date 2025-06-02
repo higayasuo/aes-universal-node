@@ -1,23 +1,34 @@
-# expo-aes-universal-node
+# aes-universal-node
 
-Web implementation of expo-aes-universal for Expo applications.
+Node.js implementation of aes-universal.
 
 ## Installation
 
 ```bash
-npm install expo-aes-universal-node
+npm install aes-universal-node
 ```
 
 ## Peer Dependencies
 
 This package requires the following peer dependencies:
 
-- `expo-aes-universal`: The base package providing abstract cipher implementations
-- `expo-crypto-universal-web`: Web implementation of crypto utilities
+- `aes-universal`: The base package providing abstract cipher implementations
 
-```bash
-npm install expo-aes-universal expo-crypto-universal-web
+## Random Bytes Generation
+
+`nodeRandomBytes` provides cryptographically secure random bytes generation using Node.js's crypto module:
+
+```ts
+import { nodeRandomBytes } from 'aes-universal-node';
+
+// Generate 32 random bytes (default size)
+const randomBytes = nodeRandomBytes();
+
+// Generate custom size of random bytes
+const customRandomBytes = nodeRandomBytes(64);
 ```
+
+This function implements the `RandomBytes` interface from `aes-universal` and is used internally by the cipher implementations.
 
 ## AES-128
 
@@ -30,20 +41,16 @@ In CBC mode, the Content Encryption Key (CEK) includes both the encryption key a
 - A128CBC-HS256: 32 bytes (16 bytes for encryption + 16 bytes for MAC)
 
 ```ts
-import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NodeCbcCipher } from 'expo-aes-universal-node';
-
-// Create crypto module instance
-const crypto = new WebCryptoModule();
+import { NodeCbcCipher, nodeRandomBytes } from 'aes-universal-node';
 
 // Create cipher instance
-const cipher = new NodeCbcCipher(crypto);
+const cipher = new NodeCbcCipher(nodeRandomBytes);
 
 // Define plaintext
 const plaintext = new Uint8Array([1, 2, 3, 4]);
 
 // Generate random CEK for AES-128-CBC-HS256
-const cek = await crypto.getRandomBytes(32); // 32 bytes (16 for encryption + 16 for MAC)
+const cek = await nodeRandomBytes(32); // 32 bytes (16 for encryption + 16 for MAC)
 
 // Encrypt data
 const { ciphertext, tag, iv } = await cipher.encrypt({
@@ -73,20 +80,16 @@ In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
 - A128GCM: 16 bytes
 
 ```ts
-import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NodeGcmCipher } from 'expo-aes-universal-node';
-
-// Create crypto module instance
-const crypto = new WebCryptoModule();
+import { NodeGcmCipher, nodeRandomBytes } from 'aes-universal-node';
 
 // Create cipher instance
-const cipher = new NodeGcmCipher(crypto);
+const cipher = new NodeGcmCipher(nodeRandomBytes);
 
 // Define plaintext
 const plaintext = new Uint8Array([1, 2, 3, 4]);
 
 // Generate random CEK for AES-128-GCM
-const cek = await crypto.getRandomBytes(16); // 16 bytes
+const cek = await nodeRandomBytes(16); // 16 bytes
 
 // Encrypt data
 const { ciphertext, tag, iv } = await cipher.encrypt({
@@ -120,20 +123,16 @@ In CBC mode, the Content Encryption Key (CEK) includes both the encryption key a
 - A192CBC-HS384: 48 bytes (24 bytes for encryption + 24 bytes for MAC)
 
 ```ts
-import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NodeCbcCipher } from 'expo-aes-universal-node';
-
-// Create crypto module instance
-const crypto = new WebCryptoModule();
+import { NodeCbcCipher, nodeRandomBytes } from 'aes-universal-node';
 
 // Create cipher instance
-const cipher = new NodeCbcCipher(crypto);
+const cipher = new NodeCbcCipher(nodeRandomBytes);
 
 // Define plaintext
 const plaintext = new Uint8Array([1, 2, 3, 4]);
 
 // Generate random CEK for AES-192-CBC-HS384
-const cek = await crypto.getRandomBytes(48); // 48 bytes (24 for encryption + 24 for MAC)
+const cek = await nodeRandomBytes(48); // 48 bytes (24 for encryption + 24 for MAC)
 
 // Encrypt data
 const { ciphertext, tag, iv } = await cipher.encrypt({
@@ -163,20 +162,16 @@ In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
 - A192GCM: 24 bytes
 
 ```ts
-import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NodeGcmCipher } from 'expo-aes-universal-node';
-
-// Create crypto module instance
-const crypto = new WebCryptoModule();
+import { NodeGcmCipher, nodeRandomBytes } from 'aes-universal-node';
 
 // Create cipher instance
-const cipher = new NodeGcmCipher(crypto);
+const cipher = new NodeGcmCipher(nodeRandomBytes);
 
 // Define plaintext
 const plaintext = new Uint8Array([1, 2, 3, 4]);
 
 // Generate random CEK for AES-192-GCM
-const cek = await crypto.getRandomBytes(24); // 24 bytes
+const cek = await nodeRandomBytes(24); // 24 bytes
 
 // Encrypt data
 const { ciphertext, tag, iv } = await cipher.encrypt({
@@ -210,20 +205,16 @@ In CBC mode, the Content Encryption Key (CEK) includes both the encryption key a
 - A256CBC-HS512: 64 bytes (32 bytes for encryption + 32 bytes for MAC)
 
 ```ts
-import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NodeCbcCipher } from 'expo-aes-universal-node';
-
-// Create crypto module instance
-const crypto = new WebCryptoModule();
+import { NodeCbcCipher, nodeRandomBytes } from 'aes-universal-node';
 
 // Create cipher instance
-const cipher = new NodeCbcCipher(crypto);
+const cipher = new NodeCbcCipher(nodeRandomBytes);
 
 // Define plaintext
 const plaintext = new Uint8Array([1, 2, 3, 4]);
 
 // Generate random CEK for AES-256-CBC-HS512
-const cek = await crypto.getRandomBytes(64); // 64 bytes (32 for encryption + 32 for MAC)
+const cek = await nodeRandomBytes(64); // 64 bytes (32 for encryption + 32 for MAC)
 
 // Encrypt data
 const { ciphertext, tag, iv } = await cipher.encrypt({
@@ -253,20 +244,16 @@ In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
 - A256GCM: 32 bytes
 
 ```ts
-import { WebCryptoModule } from 'expo-crypto-universal-web';
-import { NodeGcmCipher } from 'expo-aes-universal-node';
-
-// Create crypto module instance
-const crypto = new WebCryptoModule();
+import { NodeGcmCipher, nodeRandomBytes } from 'aes-universal-node';
 
 // Create cipher instance
-const cipher = new NodeGcmCipher(crypto);
+const cipher = new NodeGcmCipher(nodeRandomBytes);
 
 // Define plaintext
 const plaintext = new Uint8Array([1, 2, 3, 4]);
 
 // Generate random CEK for AES-256-GCM
-const cek = await crypto.getRandomBytes(32); // 32 bytes
+const cek = await nodeRandomBytes(32); // 32 bytes
 
 // Encrypt data
 const { ciphertext, tag, iv } = await cipher.encrypt({
