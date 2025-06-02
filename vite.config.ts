@@ -14,14 +14,13 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/index.ts',
-      name: 'expo-aes-universal-node',
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
       formats: ['es', 'cjs'],
     },
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      external: ['crypto', 'expo-aes-universal'],
+      external: ['crypto', 'aes-universal'],
     },
   },
 });

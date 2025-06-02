@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { NodeCbcCipher } from '../NodeCbcCipher';
-import { CryptoModule } from 'expo-crypto-universal';
+import { RandomBytes } from 'aes-universal';
+import crypto from 'crypto';
 
-/**
- * Minimal mock for CryptoModule, as NodeCbcCipher only passes it to the parent constructor.
- */
-const mockCryptoModule: CryptoModule = {} as CryptoModule;
+const randomBytes: RandomBytes = (size = 32): Uint8Array => {
+  return new Uint8Array(crypto.randomBytes(size));
+};
 
 // Test vectors for AES-128, AES-192, and AES-256
 const key128 = new Uint8Array(16).fill(1); // 16 bytes = 128 bits
@@ -23,11 +23,7 @@ const keyConfigs = [
 ];
 
 describe('NodeCbcCipher', () => {
-  let cipher: NodeCbcCipher;
-
-  beforeAll(() => {
-    cipher = new NodeCbcCipher(mockCryptoModule);
-  });
+  const cipher = new NodeCbcCipher(randomBytes);
 
   it.each(keyConfigs)(
     'should encrypt and decrypt correctly with AES-$keyBits',

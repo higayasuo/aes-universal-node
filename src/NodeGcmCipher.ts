@@ -1,13 +1,27 @@
-import { AbstractGcmCipher } from 'expo-aes-universal';
-import { CryptoModule } from 'expo-crypto-universal';
+import { AbstractGcmCipher, RandomBytes } from 'aes-universal';
 import crypto from 'crypto';
 import { keyByteLengthToGCMType } from './keyByteLengthToGCMType';
 
+/**
+ * Node.js implementation of GCM cipher using crypto module
+ */
 export class NodeGcmCipher extends AbstractGcmCipher {
-  constructor(cryptoModule: CryptoModule) {
-    super(cryptoModule);
+  /**
+   * Creates a new NodeGcmCipher instance
+   * @param randomBytes - Function to generate random bytes
+   */
+  constructor(randomBytes: RandomBytes) {
+    super(randomBytes);
   }
 
+  /**
+   * Encrypts data using AES-GCM
+   * @param encRawKey - Raw encryption key
+   * @param iv - Initialization vector
+   * @param plaintext - Data to encrypt
+   * @param aad - Additional authenticated data
+   * @returns Object containing ciphertext and authentication tag
+   */
   async encryptInternal({
     encRawKey,
     iv,
@@ -33,6 +47,15 @@ export class NodeGcmCipher extends AbstractGcmCipher {
     };
   }
 
+  /**
+   * Decrypts data using AES-GCM
+   * @param encRawKey - Raw encryption key
+   * @param iv - Initialization vector
+   * @param ciphertext - Data to decrypt
+   * @param tag - Authentication tag
+   * @param aad - Additional authenticated data
+   * @returns Decrypted data as Uint8Array
+   */
   async decryptInternal({
     encRawKey,
     iv,

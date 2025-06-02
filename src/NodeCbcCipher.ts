@@ -1,17 +1,31 @@
-import { CryptoModule } from 'expo-crypto-universal';
 import {
   AbstractCbcCipher,
   CbcDecryptInternalArgs,
   CbcEncryptInternalArgs,
   GenerateTagArgs,
-} from 'expo-aes-universal';
+  RandomBytes,
+} from 'aes-universal';
 import crypto from 'crypto';
 
+/**
+ * Node.js implementation of CBC cipher using crypto module
+ */
 export class NodeCbcCipher extends AbstractCbcCipher {
-  constructor(cryptoModule: CryptoModule) {
-    super(cryptoModule);
+  /**
+   * Creates a new NodeCbcCipher instance
+   * @param randomBytes - Function to generate random bytes
+   */
+  constructor(randomBytes: RandomBytes) {
+    super(randomBytes);
   }
 
+  /**
+   * Encrypts data using AES-CBC
+   * @param encRawKey - Raw encryption key
+   * @param iv - Initialization vector
+   * @param plaintext - Data to encrypt
+   * @returns Encrypted data as Uint8Array
+   */
   async encryptInternal({
     encRawKey,
     iv,
@@ -31,6 +45,13 @@ export class NodeCbcCipher extends AbstractCbcCipher {
     return new Uint8Array(nodeResult);
   }
 
+  /**
+   * Decrypts data using AES-CBC
+   * @param encRawKey - Raw encryption key
+   * @param iv - Initialization vector
+   * @param ciphertext - Data to decrypt
+   * @returns Decrypted data as Uint8Array
+   */
   async decryptInternal({
     encRawKey,
     iv,
@@ -50,6 +71,13 @@ export class NodeCbcCipher extends AbstractCbcCipher {
     return new Uint8Array(nodeResult);
   }
 
+  /**
+   * Generates an HMAC tag for message authentication
+   * @param macRawKey - Raw key for HMAC
+   * @param macData - Data to authenticate
+   * @param keyBits - Key size in bits
+   * @returns HMAC tag as Uint8Array
+   */
   async generateTag({
     macRawKey,
     macData,

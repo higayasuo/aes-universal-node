@@ -1,8 +1,8 @@
 {
-  "name": "expo-aes-universal-node",
+  "name": "aes-universal-node",
   "type": "module",
-  "version": "0.1.2",
-  "description": "Web implementation of expo-aes-universal for Expo applications.",
+  "version": "0.1.4",
+  "description": "Node.js implementation of aes-universal",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -14,9 +14,10 @@
     }
   },
   "scripts": {
-    "build": "vite build",
-    "test": "vitest run",
-    "type-check": "tsc --noEmit"
+    "build": "npm run type-check && vite build",
+    "test": "vitest --run",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,6 @@
     "vitest": "^3.1.1"
   },
   "peerDependencies": {
-    "expo-aes-universal": "^0.1.2"
+    "aes-universal": "^0.1.4"
   }
 }
