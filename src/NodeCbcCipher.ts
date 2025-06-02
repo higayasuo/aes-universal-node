@@ -26,11 +26,11 @@ export class NodeCbcCipher extends AbstractCbcCipher {
    * @param plaintext - Data to encrypt
    * @returns Encrypted data as Uint8Array
    */
-  async encryptInternal({
+  encryptInternal = async ({
     encRawKey,
     iv,
     plaintext,
-  }: CbcEncryptInternalArgs): Promise<Uint8Array> {
+  }: CbcEncryptInternalArgs): Promise<Uint8Array> => {
     const keyLength = encRawKey.length * 8;
     const nodeCipher = crypto.createCipheriv(
       `aes-${keyLength}-cbc`,
@@ -43,7 +43,7 @@ export class NodeCbcCipher extends AbstractCbcCipher {
     ]);
 
     return new Uint8Array(nodeResult);
-  }
+  };
 
   /**
    * Decrypts data using AES-CBC
@@ -52,11 +52,11 @@ export class NodeCbcCipher extends AbstractCbcCipher {
    * @param ciphertext - Data to decrypt
    * @returns Decrypted data as Uint8Array
    */
-  async decryptInternal({
+  decryptInternal = async ({
     encRawKey,
     iv,
     ciphertext,
-  }: CbcDecryptInternalArgs): Promise<Uint8Array> {
+  }: CbcDecryptInternalArgs): Promise<Uint8Array> => {
     const keyLength = encRawKey.length * 8;
     const nodeDecipher = crypto.createDecipheriv(
       `aes-${keyLength}-cbc`,
@@ -69,7 +69,7 @@ export class NodeCbcCipher extends AbstractCbcCipher {
     ]);
 
     return new Uint8Array(nodeResult);
-  }
+  };
 
   /**
    * Generates an HMAC tag for message authentication
@@ -78,14 +78,14 @@ export class NodeCbcCipher extends AbstractCbcCipher {
    * @param keyBits - Key size in bits
    * @returns HMAC tag as Uint8Array
    */
-  async generateTag({
+  generateTag = async ({
     macRawKey,
     macData,
     keyBits,
-  }: GenerateTagArgs): Promise<Uint8Array> {
+  }: GenerateTagArgs): Promise<Uint8Array> => {
     const hash = `sha${keyBits << 1}` as 'sha256' | 'sha384' | 'sha512';
     const hmac = crypto.createHmac(hash, macRawKey);
     hmac.update(macData);
     return new Uint8Array(hmac.digest()).slice(0, keyBits / 8);
-  }
+  };
 }

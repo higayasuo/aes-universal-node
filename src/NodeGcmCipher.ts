@@ -22,7 +22,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
    * @param aad - Additional authenticated data
    * @returns Object containing ciphertext and authentication tag
    */
-  async encryptInternal({
+  encryptInternal = async ({
     encRawKey,
     iv,
     plaintext,
@@ -32,7 +32,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
     iv: Uint8Array;
     plaintext: Uint8Array;
     aad: Uint8Array;
-  }): Promise<{ ciphertext: Uint8Array; tag: Uint8Array }> {
+  }): Promise<{ ciphertext: Uint8Array; tag: Uint8Array }> => {
     const gcmType = keyByteLengthToGCMType(encRawKey.length);
     const nodeCipher = crypto.createCipheriv(gcmType, encRawKey, iv);
     nodeCipher.setAAD(aad);
@@ -45,7 +45,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
       ciphertext: new Uint8Array(nodeResult),
       tag: new Uint8Array(tag),
     };
-  }
+  };
 
   /**
    * Decrypts data using AES-GCM
@@ -56,7 +56,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
    * @param aad - Additional authenticated data
    * @returns Decrypted data as Uint8Array
    */
-  async decryptInternal({
+  decryptInternal = async ({
     encRawKey,
     iv,
     ciphertext,
@@ -68,7 +68,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
     ciphertext: Uint8Array;
     tag: Uint8Array;
     aad: Uint8Array;
-  }): Promise<Uint8Array> {
+  }): Promise<Uint8Array> => {
     const gcmType = keyByteLengthToGCMType(encRawKey.length);
     const nodeDecipher = crypto.createDecipheriv(gcmType, encRawKey, iv);
     nodeDecipher.setAAD(aad);
@@ -78,5 +78,5 @@ export class NodeGcmCipher extends AbstractGcmCipher {
       nodeDecipher.final(),
     ]);
     return new Uint8Array(nodeResult);
-  }
+  };
 }

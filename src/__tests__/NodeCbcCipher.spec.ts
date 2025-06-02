@@ -17,11 +17,12 @@ const keyConfigs = [
 
 describe('NodeCbcCipher', () => {
   const cipher = new NodeCbcCipher(nodeRandomBytes);
+  const { encrypt, decrypt, encryptInternal, decryptInternal } = cipher;
 
   it.each(keyConfigs)(
     'should encrypt and decrypt correctly',
     async ({ enc, cek, keyBits }) => {
-      const { ciphertext, tag, iv } = await cipher.encrypt({
+      const { ciphertext, tag, iv } = await encrypt({
         enc,
         cek,
         plaintext,
@@ -31,7 +32,7 @@ describe('NodeCbcCipher', () => {
       expect(tag.length).toBe(keyBits / 8);
       expect(iv.length).toBe(16);
 
-      const decrypted = await cipher.decrypt({
+      const decrypted = await decrypt({
         enc,
         cek,
         ciphertext,
@@ -51,14 +52,14 @@ describe('NodeCbcCipher', () => {
         keyBytes: keyBits / 8,
       });
       const iv = cipher.generateIv();
-      const ciphertext = await cipher.encryptInternal({
+      const ciphertext = await encryptInternal({
         encRawKey,
         iv,
         plaintext,
       });
       expect(ciphertext.length).toBeGreaterThan(0);
 
-      const decrypted = await cipher.decryptInternal({
+      const decrypted = await decryptInternal({
         encRawKey,
         iv,
         ciphertext,

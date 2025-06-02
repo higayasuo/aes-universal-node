@@ -19,11 +19,12 @@ const keyConfigs = [
 
 describe('NodeGcmCipher', () => {
   const cipher = new NodeGcmCipher(nodeRandomBytes);
+  const { encrypt, decrypt, encryptInternal, decryptInternal } = cipher;
 
   it.each(keyConfigs)(
     'should encrypt and decrypt correctly',
     async ({ enc, cek }) => {
-      const { ciphertext, tag, iv } = await cipher.encrypt({
+      const { ciphertext, tag, iv } = await encrypt({
         enc,
         cek,
         plaintext,
@@ -33,7 +34,7 @@ describe('NodeGcmCipher', () => {
       expect(tag.length).toBe(16);
       expect(iv.length).toBe(12);
 
-      const decrypted = await cipher.decrypt({
+      const decrypted = await decrypt({
         enc,
         cek,
         ciphertext,
@@ -49,7 +50,7 @@ describe('NodeGcmCipher', () => {
     'should encryptInternal and decryptInternal correctly',
     async ({ cek }) => {
       const iv = cipher.generateIv();
-      const { ciphertext, tag } = await cipher.encryptInternal({
+      const { ciphertext, tag } = await encryptInternal({
         encRawKey: cek,
         iv,
         plaintext,
@@ -58,7 +59,7 @@ describe('NodeGcmCipher', () => {
       expect(ciphertext.length).toBeGreaterThan(0);
       expect(tag.length).toBe(16);
 
-      const decrypted = await cipher.decryptInternal({
+      const decrypted = await decryptInternal({
         encRawKey: cek,
         iv,
         ciphertext,
