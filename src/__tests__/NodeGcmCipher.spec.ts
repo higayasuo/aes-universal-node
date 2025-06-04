@@ -12,9 +12,9 @@ const plaintext = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]);
 const aad = new Uint8Array([9, 8, 7, 6]);
 
 const keyConfigs = [
-  { cek: cek128, keyBits: 128, enc: 'A128GCM' as Enc },
-  { cek: cek192, keyBits: 192, enc: 'A192GCM' as Enc },
-  { cek: cek256, keyBits: 256, enc: 'A256GCM' as Enc },
+  { cek: cek128, keyBitLength: 128, enc: 'A128GCM' as Enc },
+  { cek: cek192, keyBitLength: 192, enc: 'A192GCM' as Enc },
+  { cek: cek256, keyBitLength: 256, enc: 'A256GCM' as Enc },
 ];
 
 describe('NodeGcmCipher', () => {

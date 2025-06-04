@@ -75,17 +75,17 @@ export class NodeCbcCipher extends AbstractCbcCipher {
    * Generates an HMAC tag for message authentication
    * @param macRawKey - Raw key for HMAC
    * @param macData - Data to authenticate
-   * @param keyBits - Key size in bits
+   * @param keyBitLength - The length of the key in bits
    * @returns HMAC tag as Uint8Array
    */
   generateTag = async ({
     macRawKey,
     macData,
-    keyBits,
+    keyBitLength,
   }: GenerateTagArgs): Promise<Uint8Array> => {
-    const hash = `sha${keyBits << 1}` as 'sha256' | 'sha384' | 'sha512';
+    const hash = `sha${keyBitLength << 1}` as 'sha256' | 'sha384' | 'sha512';
     const hmac = crypto.createHmac(hash, macRawKey);
     hmac.update(macData);
-    return new Uint8Array(hmac.digest()).slice(0, keyBits / 8);
+    return new Uint8Array(hmac.digest()).slice(0, keyBitLength >>> 3);
   };
 }

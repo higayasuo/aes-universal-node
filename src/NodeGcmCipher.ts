@@ -1,6 +1,6 @@
 import { AbstractGcmCipher, RandomBytes } from 'aes-universal';
 import crypto from 'crypto';
-import { keyByteLengthToGCMType } from './keyByteLengthToGCMType';
+import { keyBitLengthToGCMType } from './keyBitLengthToGCMType';
 
 /**
  * Node.js implementation of GCM cipher using crypto module
@@ -33,7 +33,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
     plaintext: Uint8Array;
     aad: Uint8Array;
   }): Promise<{ ciphertext: Uint8Array; tag: Uint8Array }> => {
-    const gcmType = keyByteLengthToGCMType(encRawKey.length);
+    const gcmType = keyBitLengthToGCMType(encRawKey.length << 3);
     const nodeCipher = crypto.createCipheriv(gcmType, encRawKey, iv);
     nodeCipher.setAAD(aad);
     const nodeResult = Buffer.concat([
@@ -69,7 +69,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
     tag: Uint8Array;
     aad: Uint8Array;
   }): Promise<Uint8Array> => {
-    const gcmType = keyByteLengthToGCMType(encRawKey.length);
+    const gcmType = keyBitLengthToGCMType(encRawKey.length << 3);
     const nodeDecipher = crypto.createDecipheriv(gcmType, encRawKey, iv);
     nodeDecipher.setAAD(aad);
     nodeDecipher.setAuthTag(tag);
