@@ -1,7 +1,7 @@
 {
   "name": "aes-universal-node",
   "type": "module",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Node.js implementation of aes-universal",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -47,6 +47,6 @@
     "vitest": "^3.1.1"
   },
   "peerDependencies": {
-    "aes-universal": "^0.1.7"
+    "aes-universal": "^0.1.8"
   }
 }

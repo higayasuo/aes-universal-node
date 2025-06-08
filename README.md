@@ -30,248 +30,96 @@ const customRandomBytes = nodeRandomBytes(64);
 
 This function implements the `RandomBytes` interface from `aes-universal` and is used internally by the cipher implementations.
 
-## AES-128
+## AES Encryption
 
-### CBC Mode (A128CBC-HS256)
+`NodeAesCipher` provides a unified interface for AES encryption in both CBC and GCM modes. It supports all standard key lengths (128, 192, and 256 bits).
 
-`NodeCbcCipher` provides AES-128-CBC encryption and decryption using Node.js's crypto module.
+### Key Lengths and Modes
 
-In CBC mode, the Content Encryption Key (CEK) includes both the encryption key and the MAC key:
+The following encryption modes are supported:
 
-- A128CBC-HS256: 32 bytes (16 bytes for encryption + 16 bytes for MAC)
+#### CBC Mode
 
-```ts
-import { NodeCbcCipher, nodeRandomBytes } from 'aes-universal-node';
+- A128CBC-HS256: 32 bytes CEK (16 bytes for encryption + 16 bytes for MAC)
+- A192CBC-HS384: 48 bytes CEK (24 bytes for encryption + 24 bytes for MAC)
+- A256CBC-HS512: 64 bytes CEK (32 bytes for encryption + 32 bytes for MAC)
 
-// Create cipher instance
-const cipher = new NodeCbcCipher(nodeRandomBytes);
+#### GCM Mode
 
-// Define plaintext
-const plaintext = new Uint8Array([1, 2, 3, 4]);
+- A128GCM: 16 bytes CEK
+- A192GCM: 24 bytes CEK
+- A256GCM: 32 bytes CEK
 
-// Generate random CEK for AES-128-CBC-HS256
-const cek = await nodeRandomBytes(32); // 32 bytes (16 for encryption + 16 for MAC)
-
-// Encrypt data
-const { ciphertext, tag, iv } = await cipher.encrypt({
-  enc: 'A128CBC-HS256', // AES-128 in CBC mode with HMAC-SHA-256
-  cek,
-  plaintext,
-});
-
-// Decrypt data
-const decrypted = await cipher.decrypt({
-  enc: 'A128CBC-HS256',
-  cek,
-  ciphertext,
-  tag,
-  iv,
-});
-
-expect(decrypted).toEqual(plaintext);
-```
-
-### GCM Mode (A128GCM)
-
-`NodeGcmCipher` provides AES-128-GCM encryption and decryption using Node.js's crypto module.
-
-In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
-
-- A128GCM: 16 bytes
+### Usage Example
 
 ```ts
-import { NodeGcmCipher, nodeRandomBytes } from 'aes-universal-node';
+import { NodeAesCipher, nodeRandomBytes } from 'aes-universal-node';
+import { Enc } from 'aes-universal';
 
 // Create cipher instance
-const cipher = new NodeGcmCipher(nodeRandomBytes);
+const cipher = new NodeAesCipher(nodeRandomBytes);
 
-// Define plaintext
+// Define encryption modes
+const A128CBC_HS256 = 'A128CBC-HS256' as Enc;
+const A128GCM = 'A128GCM' as Enc;
+
+// Define plaintext and AAD
 const plaintext = new Uint8Array([1, 2, 3, 4]);
+const aad = new Uint8Array([5, 6, 7, 8]);
 
-// Generate random CEK for AES-128-GCM
-const cek = await nodeRandomBytes(16); // 16 bytes
-
-// Encrypt data
-const { ciphertext, tag, iv } = await cipher.encrypt({
-  enc: 'A128GCM', // AES-128 in GCM mode
-  cek,
+// Generate CEK for A128CBC-HS256
+const cek128Cbc = await cipher.generateCek(A128CBC_HS256);
+const {
+  ciphertext: cbcCiphertext,
+  tag: cbcTag,
+  iv: cbcIv,
+} = await cipher.encrypt({
+  enc: A128CBC_HS256,
+  cek: cek128Cbc,
   plaintext,
-  aad: new Uint8Array([5, 6, 7, 8]), // Additional authenticated data
+  aad,
 });
 
-// Decrypt data
-const decrypted = await cipher.decrypt({
-  enc: 'A128GCM',
-  cek,
-  ciphertext,
-  tag,
-  iv,
-  aad: new Uint8Array([5, 6, 7, 8]),
+const cbcDecrypted = await cipher.decrypt({
+  enc: A128CBC_HS256,
+  cek: cek128Cbc,
+  ciphertext: cbcCiphertext,
+  tag: cbcTag,
+  iv: cbcIv,
+  aad,
 });
 
-expect(decrypted).toEqual(plaintext);
+// Generate CEK for A128GCM
+const cek128Gcm = await cipher.generateCek(A128GCM);
+const {
+  ciphertext: gcmCiphertext,
+  tag: gcmTag,
+  iv: gcmIv,
+} = await cipher.encrypt({
+  enc: A128GCM,
+  cek: cek128Gcm,
+  plaintext,
+  aad,
+});
+
+const gcmDecrypted = await cipher.decrypt({
+  enc: A128GCM,
+  cek: cek128Gcm,
+  ciphertext: gcmCiphertext,
+  tag: gcmTag,
+  iv: gcmIv,
+  aad,
+});
+
+expect(cbcDecrypted).toEqual(plaintext);
+expect(gcmDecrypted).toEqual(plaintext);
 ```
 
-## AES-192
+### Features
 
-### CBC Mode (A192CBC-HS384)
-
-`NodeCbcCipher` provides AES-192-CBC encryption and decryption using Node.js's crypto module.
-
-In CBC mode, the Content Encryption Key (CEK) includes both the encryption key and the MAC key:
-
-- A192CBC-HS384: 48 bytes (24 bytes for encryption + 24 bytes for MAC)
-
-```ts
-import { NodeCbcCipher, nodeRandomBytes } from 'aes-universal-node';
-
-// Create cipher instance
-const cipher = new NodeCbcCipher(nodeRandomBytes);
-
-// Define plaintext
-const plaintext = new Uint8Array([1, 2, 3, 4]);
-
-// Generate random CEK for AES-192-CBC-HS384
-const cek = await nodeRandomBytes(48); // 48 bytes (24 for encryption + 24 for MAC)
-
-// Encrypt data
-const { ciphertext, tag, iv } = await cipher.encrypt({
-  enc: 'A192CBC-HS384', // AES-192 in CBC mode with HMAC-SHA-384
-  cek,
-  plaintext,
-});
-
-// Decrypt data
-const decrypted = await cipher.decrypt({
-  enc: 'A192CBC-HS384',
-  cek,
-  ciphertext,
-  tag,
-  iv,
-});
-
-expect(decrypted).toEqual(plaintext);
-```
-
-### GCM Mode (A192GCM)
-
-`NodeGcmCipher` provides AES-192-GCM encryption and decryption using Node.js's crypto module.
-
-In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
-
-- A192GCM: 24 bytes
-
-```ts
-import { NodeGcmCipher, nodeRandomBytes } from 'aes-universal-node';
-
-// Create cipher instance
-const cipher = new NodeGcmCipher(nodeRandomBytes);
-
-// Define plaintext
-const plaintext = new Uint8Array([1, 2, 3, 4]);
-
-// Generate random CEK for AES-192-GCM
-const cek = await nodeRandomBytes(24); // 24 bytes
-
-// Encrypt data
-const { ciphertext, tag, iv } = await cipher.encrypt({
-  enc: 'A192GCM', // AES-192 in GCM mode
-  cek,
-  plaintext,
-  aad: new Uint8Array([5, 6, 7, 8]), // Additional authenticated data
-});
-
-// Decrypt data
-const decrypted = await cipher.decrypt({
-  enc: 'A192GCM',
-  cek,
-  ciphertext,
-  tag,
-  iv,
-  aad: new Uint8Array([5, 6, 7, 8]),
-});
-
-expect(decrypted).toEqual(plaintext);
-```
-
-## AES-256
-
-### CBC Mode (A256CBC-HS512)
-
-`NodeCbcCipher` provides AES-256-CBC encryption and decryption using Node.js's crypto module.
-
-In CBC mode, the Content Encryption Key (CEK) includes both the encryption key and the MAC key:
-
-- A256CBC-HS512: 64 bytes (32 bytes for encryption + 32 bytes for MAC)
-
-```ts
-import { NodeCbcCipher, nodeRandomBytes } from 'aes-universal-node';
-
-// Create cipher instance
-const cipher = new NodeCbcCipher(nodeRandomBytes);
-
-// Define plaintext
-const plaintext = new Uint8Array([1, 2, 3, 4]);
-
-// Generate random CEK for AES-256-CBC-HS512
-const cek = await nodeRandomBytes(64); // 64 bytes (32 for encryption + 32 for MAC)
-
-// Encrypt data
-const { ciphertext, tag, iv } = await cipher.encrypt({
-  enc: 'A256CBC-HS512', // AES-256 in CBC mode with HMAC-SHA-512
-  cek,
-  plaintext,
-});
-
-// Decrypt data
-const decrypted = await cipher.decrypt({
-  enc: 'A256CBC-HS512',
-  cek,
-  ciphertext,
-  tag,
-  iv,
-});
-
-expect(decrypted).toEqual(plaintext);
-```
-
-### GCM Mode (A256GCM)
-
-`NodeGcmCipher` provides AES-256-GCM encryption and decryption using Node.js's crypto module.
-
-In GCM mode, the Content Encryption Key (CEK) is used directly for encryption:
-
-- A256GCM: 32 bytes
-
-```ts
-import { NodeGcmCipher, nodeRandomBytes } from 'aes-universal-node';
-
-// Create cipher instance
-const cipher = new NodeGcmCipher(nodeRandomBytes);
-
-// Define plaintext
-const plaintext = new Uint8Array([1, 2, 3, 4]);
-
-// Generate random CEK for AES-256-GCM
-const cek = await nodeRandomBytes(32); // 32 bytes
-
-// Encrypt data
-const { ciphertext, tag, iv } = await cipher.encrypt({
-  enc: 'A256GCM', // AES-256 in GCM mode
-  cek,
-  plaintext,
-  aad: new Uint8Array([5, 6, 7, 8]), // Additional authenticated data
-});
-
-// Decrypt data
-const decrypted = await cipher.decrypt({
-  enc: 'A256GCM',
-  cek,
-  ciphertext,
-  tag,
-  iv,
-  aad: new Uint8Array([5, 6, 7, 8]),
-});
-
-expect(decrypted).toEqual(plaintext);
-```
+- Supports all standard AES key lengths (128, 192, 256 bits)
+- Implements both CBC and GCM modes
+- Uses Node.js native crypto module for optimal performance
+- Provides authenticated encryption
+- Supports Additional Authenticated Data (AAD) for GCM mode
+- Includes comprehensive test suite
