@@ -1,8 +1,8 @@
 import {
   AbstractCbcCipher,
-  CbcDecryptInternalArgs,
-  CbcEncryptInternalArgs,
-  GenerateTagArgs,
+  CbcDecryptInternalParams,
+  CbcEncryptInternalParams,
+  GenerateTagParams,
   RandomBytes,
 } from 'aes-universal';
 import crypto from 'crypto';
@@ -30,7 +30,7 @@ export class NodeCbcCipher extends AbstractCbcCipher {
     encRawKey,
     iv,
     plaintext,
-  }: CbcEncryptInternalArgs): Promise<Uint8Array> => {
+  }: CbcEncryptInternalParams): Promise<Uint8Array> => {
     const keyLength = encRawKey.length * 8;
     const nodeCipher = crypto.createCipheriv(
       `aes-${keyLength}-cbc`,
@@ -56,7 +56,7 @@ export class NodeCbcCipher extends AbstractCbcCipher {
     encRawKey,
     iv,
     ciphertext,
-  }: CbcDecryptInternalArgs): Promise<Uint8Array> => {
+  }: CbcDecryptInternalParams): Promise<Uint8Array> => {
     const keyLength = encRawKey.length * 8;
     const nodeDecipher = crypto.createDecipheriv(
       `aes-${keyLength}-cbc`,
@@ -82,7 +82,7 @@ export class NodeCbcCipher extends AbstractCbcCipher {
     macRawKey,
     macData,
     keyBitLength,
-  }: GenerateTagArgs): Promise<Uint8Array> => {
+  }: GenerateTagParams): Promise<Uint8Array> => {
     const hash = `sha${keyBitLength << 1}` as 'sha256' | 'sha384' | 'sha512';
     const hmac = crypto.createHmac(hash, macRawKey);
     hmac.update(macData);

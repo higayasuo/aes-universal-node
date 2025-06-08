@@ -1,4 +1,10 @@
-import { AbstractGcmCipher, RandomBytes } from 'aes-universal';
+import {
+  AbstractGcmCipher,
+  GcmDecryptInternalParams,
+  GcmEncryptInternalParams,
+  GcmEncryptInternalResult,
+  RandomBytes,
+} from 'aes-universal';
 import crypto from 'crypto';
 import { keyBitLengthToGCMType } from './keyBitLengthToGCMType';
 
@@ -27,12 +33,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
     iv,
     plaintext,
     aad,
-  }: {
-    encRawKey: Uint8Array;
-    iv: Uint8Array;
-    plaintext: Uint8Array;
-    aad: Uint8Array;
-  }): Promise<{ ciphertext: Uint8Array; tag: Uint8Array }> => {
+  }: GcmEncryptInternalParams): Promise<GcmEncryptInternalResult> => {
     const gcmType = keyBitLengthToGCMType(encRawKey.length << 3);
     const nodeCipher = crypto.createCipheriv(gcmType, encRawKey, iv);
     nodeCipher.setAAD(aad);
@@ -62,13 +63,7 @@ export class NodeGcmCipher extends AbstractGcmCipher {
     ciphertext,
     tag,
     aad,
-  }: {
-    encRawKey: Uint8Array;
-    iv: Uint8Array;
-    ciphertext: Uint8Array;
-    tag: Uint8Array;
-    aad: Uint8Array;
-  }): Promise<Uint8Array> => {
+  }: GcmDecryptInternalParams): Promise<Uint8Array> => {
     const gcmType = keyBitLengthToGCMType(encRawKey.length << 3);
     const nodeDecipher = crypto.createDecipheriv(gcmType, encRawKey, iv);
     nodeDecipher.setAAD(aad);
