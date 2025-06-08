@@ -7,11 +7,6 @@ import { NodeGcmCipher } from './NodeGcmCipher';
  *
  * This class extends the base AesCipher class and provides implementations
  * for both CBC and GCM modes using Node.js native crypto functionality.
- *
- * @example
- * const cipher = new NodeAesCipher(nodeRandomBytes);
- * const encrypted = cipher.encryptCbc(key, plaintext, iv);
- * const decrypted = cipher.decryptCbc(key, encrypted, iv);
  */
 export class NodeAesCipher extends AesCipher<
   NodeCbcCipher,
